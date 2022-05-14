@@ -7,32 +7,133 @@
 // Example: 5! = 5 x 4 x 3 x 2 x 1 = 120
 // factorial(5); // 120
 var factorial = function(n) {
+// base case
+if (n < 0){
+  return null;
+}
+
+if (n === 0){
+  return 1;
+}
+// recursive case
+return (n * factorial(n-1));
+
 };
 
 // 2. Compute the sum of an array of integers.
 // sum([1,2,3,4,5,6]); // 21
 var sum = function(array) {
+  // base case
+  if (array.length === 0) {
+    return 0;
+  }
+  // recursive case
+  return array[0] + sum(array.slice(1));
+
 };
 
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
+// Constraints: do not use flat or flatten
 var arraySum = function(array) {
+  //base case:
+  if (array.length === 0) {
+    return 0;
+  }
+  // recursive case
+  var rest = array.slice();
+  var next = rest.pop();
+
+  // Where I get stuck:
+  // combining recursion with an ifelse, and
+  // and returning two instances of the function
+  if (next instanceof Array){
+    return arraySum(next) + arraySum(rest);
+  } else {
+    return next + arraySum(rest);
+  }
+
 };
 
 // 4. Check if a number is even.
 var isEven = function(n) {
+  // strategy: reduce n to zero without mod
+  // with mod: number is even if n mod 2 == 0
+  // you could potentially recurse through numbers, subtracting 2 each time
+
+  // Base case: remainder is 2 then return true (maybe 0?)
+  // remainder is < 2 return false
+  if(n === 2 || n=== 0){
+    return true;
+  } else if (n<-2){
+    return isEven ((-n) -2);
+  } else if (n < 2 ){
+    return false;
+  } else {
+    return isEven( n - 2 );
+  }
+
 };
 
 // 5. Sum all integers below a given integer.
 // sumBelow(10); // 45
 // sumBelow(7); // 21
 var sumBelow = function(n) {
+  if (n < 0){
+    // handle negative numbers
+    return (n+1) +sumBelow(n+1);
+  }
+  // base case: integer is 0
+  if (n == 0){
+    return 0;
+  };
+
+  if (n > 0){
+    return (n-1) + sumBelow(n-1)
+  }
 };
 
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
+// expect(range(3,8)).to.eql([4,5,6,7]);
 var range = function(x, y) {
-};
+
+  if(y-x === 0 || y-x === 1){
+    return [];
+  }
+  if(y < x){
+    console.log("edge case: " + x + " and " + y);
+    if(x - y === 2){ // base case here:
+      console.log("top of stack: adding " + (x-1))
+      return [x-1];
+    }
+    else { // if x-y is greater than 2, increment y
+      var result = range(x, y+1);
+      result.push(y+1);
+      return result;
+    }
+
+  }
+
+  if(y>x){
+
+  if(y-x === 2){
+    return [x+1];
+  }
+  else {
+
+    var result = range(x, y-1);
+    // push the last number. Why?
+    result.push(y-1);
+    // return result
+    return result;
+  }
+  }
+
+}
+
+
+
 
 // 7. Compute the exponent of a number.
 // The exponent of a number says how many times the base number is used as a factor.
